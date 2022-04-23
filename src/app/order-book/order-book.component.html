@@ -1,0 +1,24 @@
+<div class="container-md">
+    <div class="row py-3">
+        <div class="col-12 col-md-7">
+            <div class="row text-center">
+                <div class="col-3 h2 box-square bg-dark-red text-white p-0 mb-0 py-1">Buy</div>
+                <div class="col-6 h2 box-square bg-gray text-white mb-0 py-1">Price</div>
+                <div class="col-3 h2 box-square bg-dark-green text-white mb-0 py-1">Sell</div>
+            </div>
+            <div class="row text-center" *ngFor="let order of bidsList | slice:0:5">
+                <div class="col-3 h2 box-square-cool-red bg-red mb-0 py-1"></div>
+                <div class="col-6 h2 box-square mb-0 py-1">{{order[0]}}</div>
+                <div class="col-3 h2 box-square-cool-green bg-green mb-0 py-1">{{order[1]}}</div>
+            </div>
+            <div class="row text-center" *ngFor="let order of asksList | slice:0:5">
+                <div class="col-3 h2 box-square-cool-red bg-red mb-0 py-1">{{order[1]}}</div>
+                <div class="col-6 h2 box-square mb-0 py-1">{{order[0]}}</div>
+                <div class="col-3 h2 box-square-cool-green bg-green mb-0 py-1"></div>
+            </div>
+        </div>
+        <div class="col-12 col-md-5">
+
+        </div>
+    </div>
+</div>

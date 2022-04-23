@@ -6,11 +6,13 @@ import { HdWalletAdapterModule } from '@heavy-duty/wallet-adapter';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ExampleComponent } from './example/example.component';
+import { OrderBookComponent } from './order-book/order-book.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ExampleComponent
+    ExampleComponent,
+    OrderBookComponent
   ],
   imports: [
     CommonModule,
