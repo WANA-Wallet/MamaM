@@ -1,3 +1,3 @@
-# MamaM
+# Mama M
 
-Market MA macker on Hackathon 3.0
+Market MA Maker on Hackathon 3.0
