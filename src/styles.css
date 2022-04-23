@@ -75,3 +75,7 @@
 .box-square-cool-green {
     box-shadow: inset 0 0 0.75em gold, 0 0 0.75em green;
 }
+
+.border-gold {
+    border-color: #cbbc18 !important;
+}

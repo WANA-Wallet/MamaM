@@ -7,6 +7,7 @@ import {
   SolongWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
