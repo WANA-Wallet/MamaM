@@ -1,63 +1,158 @@
 <div class="container">
     <div class="row">
-        <div class="col-6">
-            <section>
-                <h2>Wallet details</h2>
+        <div class="col-7">
+            <!-- example -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                        <section>
+                            <h2>Wallet details</h2>
 
-                <select
-                        [ngModel]="walletName$ | async"
-                        (ngModelChange)="onSelectWallet($event)"
-                >
-                    <option [ngValue]="null">Not selected</option>
-                    <option
-                            *ngFor="let wallet of wallets$ | async"
-                            [ngValue]="wallet.adapter.name"
-                    >
-                        {{ wallet.adapter.name }} ({{ wallet.readyState }})
-                    </option>
-                </select>
+                            <select
+                                    [ngModel]="walletName$ | async"
+                                    (ngModelChange)="onSelectWallet($event)"
+                            >
+                                <option [ngValue]="null">Not selected</option>
+                                <option
+                                        *ngFor="let wallet of wallets$ | async"
+                                        [ngValue]="wallet.adapter.name"
+                                >
+                                    {{ wallet.adapter.name }} ({{ wallet.readyState }})
+                                </option>
+                            </select>
 
-                <p>
-                    Selected provider: {{ walletName$ | async }}
-                    <ng-container *ngIf="ready$ | async">(READY)</ng-container>
-                </p>
-                <p>Wallet Key: {{ publicKey$ | async }}</p>
-                <button
-                        (click)="onConnect()"
-                        *ngIf="
+                            <p>
+                                Selected provider: {{ walletName$ | async }}
+                                <ng-container *ngIf="ready$ | async">(READY)</ng-container>
+                            </p>
+                            <p>Wallet Key: {{ publicKey$ | async }}</p>
+                            <button
+                                    (click)="onConnect()"
+                                    *ngIf="
             (connected$ | async) === false && (walletName$ | async) !== null
           "
-                        [disabled]="(ready$ | async) === false"
-                >
-                    Connect
-                </button>
-                <button (click)="onDisconnect()" *ngIf="connected$ | async">
-                    Disconnect
-                </button>
-            </section>
+                                    [disabled]="(ready$ | async) === false"
+                            >
+                                Connect
+                            </button>
+                            <button (click)="onDisconnect()" *ngIf="connected$ | async">
+                                Disconnect
+                            </button>
+                        </section>
+                    </div>
+                    <div class="col-6">
+                        <section *ngIf="publicKey$ | async as publicKey">
+                            <h2>Transaction</h2>
+
+                            <div>
+                                <label>Recipient</label>
+                                <input type="text" [(ngModel)]="recipient" />
+                            </div>
+
+                            <div>
+                                <label>Lamports</label>
+                                <input type="number" [(ngModel)]="lamports" />
+                            </div>
+
+                            <button (click)="onSendTransaction(publicKey)">Send Transaction</button>
+                            <button (click)="onSignTransaction(publicKey)">Sign Transaction</button>
+                            <button (click)="onSignAllTransactions(publicKey)">
+                                Sign All Transactions
+                            </button>
+                            <button (click)="onSignMessage()">Sign Message</button>
+                        </section>
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <div class="col-6">
-            <section *ngIf="publicKey$ | async as publicKey">
-                <h2>Transaction</h2>
-
-                <div>
-                    <label>Recipient</label>
-                    <input type="text" [(ngModel)]="recipient" />
+        <div class="col-5">
+            <!-- staking -->
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Staking</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Cras justo odio</li>
+                        <li class="list-group-item">Dapibus ac facilisis in</li>
+                        <li class="list-group-item">Vestibulum at eros</li>
+                    </ul>
+                    <div class="card-body">
+                        <p class="card-text">TVL (total value locked)</p>
+                        <a href="#" class="card-link">Card link</a>
+                        <a href="#" class="card-link">Another link</a>
+                    </div>
+                    <div class="card-footer">
+                        test
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <div>
-                    <label>Lamports</label>
-                    <input type="number" [(ngModel)]="lamports" />
+    <!-- order-book -->
+    <div class="row py-3 align-items-center">
+        <div class="col-12 col-md-6">
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-3 h2 box-square bg-dark-red text-white p-0 mb-0 py-1">Buy</div>
+                    <div class="col-6 h2 box-square bg-gray text-white mb-0 py-1">Price</div>
+                    <div class="col-3 h2 box-square bg-dark-green text-white mb-0 py-1">Sell</div>
                 </div>
+                <div class="row text-center" *ngFor="let order of bidsList | slice:0:5">
+                    <div class="col-3 h2 box-square-cool-red bg-red mb-0 py-1"></div>
+                    <div class="col-6 h2 box-square mb-0 py-1">{{order[0]}}</div>
+                    <div class="col-3 h2 box-square-cool-green bg-green mb-0 py-1">{{order[1]}}</div>
+                </div>
+                <div class="row text-center" *ngFor="let order of asksList | slice:0:5">
+                    <div class="col-3 h2 box-square-cool-red bg-red mb-0 py-1">{{order[1]}}</div>
+                    <div class="col-6 h2 box-square mb-0 py-1">{{order[0]}}</div>
+                    <div class="col-3 h2 box-square-cool-green bg-green mb-0 py-1"></div>
+                </div>
+            </div>
+        </div>
 
-                <button (click)="onSendTransaction(publicKey)">Send Transaction</button>
-                <button (click)="onSignTransaction(publicKey)">Sign Transaction</button>
-                <button (click)="onSignAllTransactions(publicKey)">
-                    Sign All Transactions
-                </button>
-                <button (click)="onSignMessage()">Sign Message</button>
-            </section>
+        <div class="col-12 col-md-6 mt-5 mt-md-0">
+            <div class="container">
+                <div class="card border-gold border-5 mb-3 h-100">
+                    <div class="h1 card-header box-square-cool-dark-gold border-gold border-3 text-center mb-2">Order</div>
+                    <div class="card-body">
+                        <div class="d-flex flex-column">
+                            <div class="col-12">
+                                <label class="w-100 cursor-pointer">
+                                    <div class="row text-center">
+                                        <div class="h2 col-6 box-square py-2 on-hover-light user-select-none">Price</div>
+                                        <div class="h2 col-6 box-square px-0"><input type="text" id="Price" class="form-control text-center h-100 fs-5" [(ngModel)]="price"></div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="col-12">
+                                <label class="w-100 cursor-pointer">
+                                    <div class="row text-center">
+                                        <div class="h2 col-6 box-square py-2 on-hover-light user-select-none">Amount</div>
+                                        <div class="h2 col-6 box-square px-0"><input type="text" id="Amount" class="form-control text-center h-100 fs-5" [ngModel]="amount"></div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="col-12">
+                                <div class="row text-center">
+                                    <div class="col-6 box-square user-select-none px-0" (click)="changeMode(0)">
+                                        <div class="form-control h-100 on-hover-light" [ngClass]="{'box-square-cool-green': mode == 0}"><span class="h2 text-dark-green">Sell</span></div>
+                                    </div>
+                                    <div class="col-6 box-square user-select-none px-0" (click)="changeMode(1)">
+                                        <div class="form-control h-100 on-hover-light" [ngClass]="{'box-square-cool-red': mode == 1}"><span class="h2 text-red">Buy</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="h2 card-footer bg-transparent border-gold border-3 box-square-cool-gold text-center user-select-none on-hover-light mt-5" (click)="submit()">Submit</div>
+                </div>
+            </div>
         </div>
     </div>
 
 </div>
+
+{{market$}}123
