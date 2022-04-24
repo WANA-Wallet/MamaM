@@ -6,6 +6,7 @@ import { Keypair, PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
 import { isNotNull } from '../operators';
 import { initializeContext } from 'MamaM/sdk'
 import base58 from 'bs58';
+import initUserOnMarket from 'MamaM/sdk/instructions/initUserOnMarket';
 
 @Component({
     selector: 'app-example',
@@ -30,11 +31,6 @@ export class ExampleComponent implements OnInit {
     readonly connected$ = this._walletStore.connected$;
     readonly publicKey$ = this._walletStore.publicKey$;
     public anchorWallet$ = this._walletStore.anchorWallet$;
-    public anchorWallet: {
-        publicKey: PublicKey;
-        signTransaction: (transaction: Transaction) => Promise<Transaction>;
-        signAllTransactions: (transactions: Transaction[]) => Promise<Transaction[]>;
-    } | undefined;
 
     lamports = 0;
     recipient = '';
@@ -55,12 +51,14 @@ export class ExampleComponent implements OnInit {
 
     onSelectWallet(walletName: WalletName) {
         this._walletStore.selectWallet(walletName);
-        let keypair: Keypair;
         this.anchorWallet$.subscribe(wallet => {
-            this.anchorWallet = wallet;
             if (wallet) {
-                let w = initializeContext(wallet);
-                w.then(); // TODO
+                let context$ = initializeContext(wallet);
+                context$.then((context) => {
+                    // TODO
+                    // initUserOnMarket(context, );
+                    }
+                );
             } else {
                 console.warn('wallet undefined!!');
             }

@@ -1,57 +1,63 @@
-{{anchorWallet | json}}
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <section>
+                <h2>Wallet details</h2>
 
-<section>
-    <h2>Wallet details</h2>
+                <select
+                        [ngModel]="walletName$ | async"
+                        (ngModelChange)="onSelectWallet($event)"
+                >
+                    <option [ngValue]="null">Not selected</option>
+                    <option
+                            *ngFor="let wallet of wallets$ | async"
+                            [ngValue]="wallet.adapter.name"
+                    >
+                        {{ wallet.adapter.name }} ({{ wallet.readyState }})
+                    </option>
+                </select>
 
-    <select
-            [ngModel]="walletName$ | async"
-            (ngModelChange)="onSelectWallet($event)"
-    >
-        <option [ngValue]="null">Not selected</option>
-        <option
-                *ngFor="let wallet of wallets$ | async"
-                [ngValue]="wallet.adapter.name"
-        >
-            {{ wallet.adapter.name }} ({{ wallet.readyState }})
-        </option>
-    </select>
-
-    <p>
-        Selected provider: {{ walletName$ | async }}
-        <ng-container *ngIf="ready$ | async">(READY)</ng-container>
-    </p>
-    <p>Wallet Key: {{ publicKey$ | async }}</p>
-    <button
-            (click)="onConnect()"
-            *ngIf="
+                <p>
+                    Selected provider: {{ walletName$ | async }}
+                    <ng-container *ngIf="ready$ | async">(READY)</ng-container>
+                </p>
+                <p>Wallet Key: {{ publicKey$ | async }}</p>
+                <button
+                        (click)="onConnect()"
+                        *ngIf="
             (connected$ | async) === false && (walletName$ | async) !== null
           "
-            [disabled]="(ready$ | async) === false"
-    >
-        Connect
-    </button>
-    <button (click)="onDisconnect()" *ngIf="connected$ | async">
-        Disconnect
-    </button>
-</section>
+                        [disabled]="(ready$ | async) === false"
+                >
+                    Connect
+                </button>
+                <button (click)="onDisconnect()" *ngIf="connected$ | async">
+                    Disconnect
+                </button>
+            </section>
+        </div>
+        <div class="col-6">
+            <section *ngIf="publicKey$ | async as publicKey">
+                <h2>Transaction</h2>
 
-<section *ngIf="publicKey$ | async as publicKey">
-    <h2>Transaction</h2>
+                <div>
+                    <label>Recipient</label>
+                    <input type="text" [(ngModel)]="recipient" />
+                </div>
 
-    <div>
-        <label>Recipient</label>
-        <input type="text" [(ngModel)]="recipient" />
+                <div>
+                    <label>Lamports</label>
+                    <input type="number" [(ngModel)]="lamports" />
+                </div>
+
+                <button (click)="onSendTransaction(publicKey)">Send Transaction</button>
+                <button (click)="onSignTransaction(publicKey)">Sign Transaction</button>
+                <button (click)="onSignAllTransactions(publicKey)">
+                    Sign All Transactions
+                </button>
+                <button (click)="onSignMessage()">Sign Message</button>
+            </section>
+        </div>
     </div>
 
-    <div>
-        <label>Lamports</label>
-        <input type="number" [(ngModel)]="lamports" />
-    </div>
-
-    <button (click)="onSendTransaction(publicKey)">Send Transaction</button>
-    <button (click)="onSignTransaction(publicKey)">Sign Transaction</button>
-    <button (click)="onSignAllTransactions(publicKey)">
-        Sign All Transactions
-    </button>
-    <button (click)="onSignMessage()">Sign Message</button>
-</section>
+</div>

@@ -7,12 +7,14 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ExampleComponent } from './example/example.component';
 import { OrderBookComponent } from './order-book/order-book.component';
+import { StakingComponent } from './staking/staking.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ExampleComponent,
-    OrderBookComponent
+    OrderBookComponent,
+    StakingComponent
   ],
   imports: [
     CommonModule,

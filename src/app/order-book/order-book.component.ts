@@ -7,6 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OrderBookComponent implements OnInit {
 
+    constructor() {
+    }
+
+    ngOnInit(): void {
+        //  每五秒呼叫一次更新報價
+    }
+
     public mode = -1; // -1: Default Value, 0: Sell, 1: Buy
     public price = 0;
     public amount = 0;
@@ -23,13 +30,6 @@ export class OrderBookComponent implements OnInit {
         [177.2546, 3],
         [202.1187, 6],
     ];
-
-    constructor() {
-    }
-
-    ngOnInit(): void {
-        //  每五秒呼叫一次更新報價
-    }
 
     public changeMode(mode: number) {
         console.log(mode, 'changeMode')
