@@ -19,30 +19,38 @@
         </div>
         <div class="col-12 col-md-5 mt-5 mt-md-0">
             <div class="card border-gold border-5 mb-3">
-                <div class="h1 card-header bg-transparent border-gold border-3 text-center">Order</div>
+                <div class="h1 card-header box-square-cool-dark-gold border-gold border-3 text-center">Order</div>
                 <div class="card-body">
                     <div class="d-flex flex-column">
                         <div class="col-12">
-                            <div class="row text-center">
-                                <div class="h2 col-6 box-square"><label for="Price">Price</label></div>
-                                <div class="h2 col-6 box-square px-0"><input type="text" id="Price" class="form-control text-center w-100"></div>
-                            </div>
+                            <label class="w-100 cursor-pointer">
+                                <div class="row text-center">
+                                    <div class="h2 col-6 box-square py-2 on-hover-light user-select-none">Price</div>
+                                    <div class="h2 col-6 box-square px-0"><input type="text" id="Price" class="form-control text-center h-100 fs-5" [(ngModel)]="price"></div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-12">
+                            <label class="w-100 cursor-pointer">
+                                <div class="row text-center">
+                                    <div class="h2 col-6 box-square py-2 on-hover-light user-select-none">Amount</div>
+                                    <div class="h2 col-6 box-square px-0"><input type="text" id="Amount" class="form-control text-center h-100 fs-5" [ngModel]="amount"></div>
+                                </div>
+                            </label>
                         </div>
                         <div class="col-12">
                             <div class="row text-center">
-                                <div class="h2 col-6 box-square"><label for="Amount">Amount</label></div>
-                                <div class="h2 col-6 box-square px-0"><input type="text" id="Amount" class="form-control text-center w-100"></div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="row text-center">
-                                <div class="h2 col-6 box-square">Sell</div>
-                                <div class="h2 col-6 box-square">Buy</div>
+                                <div class="col-6 box-square user-select-none px-0" (click)="changeMode(0)">
+                                    <div class="form-control h-100 on-hover-light" [ngClass]="{'box-square-cool-green': mode == 0}"><span class="h2 text-dark-green">Sell</span></div>
+                                </div>
+                                <div class="col-6 box-square user-select-none px-0" (click)="changeMode(1)">
+                                    <div class="form-control h-100 on-hover-light" [ngClass]="{'box-square-cool-red': mode == 1}"><span class="h2 text-red">Buy</span></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="h1 card-footer bg-transparent border-gold border-3 text-center">Submit</div>
+                <div class="h2 card-footer bg-transparent border-gold border-3 box-square-cool-gold text-center user-select-none on-hover-light" (click)="submit()">Submit</div>
             </div>
         </div>
     </div>

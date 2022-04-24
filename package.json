@@ -30,7 +30,8 @@
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "util": "^0.12.4",
-    "zone.js": "~0.11.4"
+    "zone.js": "~0.11.4",
+    "MamaM":"git@github.com:WayneAl/MamaM.git#1d872ef7ccaa66539085395d3f85f557d3ebe415"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.2.2",
