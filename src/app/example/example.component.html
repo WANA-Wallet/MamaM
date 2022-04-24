@@ -1,12 +1,12 @@
 <div class="container">
-    <div class="row">
-        <div class="col-7">
+    <div class="row my-4">
+        <div class="col-12 box-square-cool-gold">
             <!-- example -->
             <div class="container">
                 <div class="row">
                     <div class="col-6">
-                        <section>
-                            <h2>Wallet details</h2>
+                        <section class="py-3">
+                            <h2>Wallet Details</h2>
 
                             <select
                                     [ngModel]="walletName$ | async"
@@ -35,31 +35,37 @@
                             >
                                 Connect
                             </button>
-                            <button (click)="onDisconnect()" *ngIf="connected$ | async">
-                                Disconnect
-                            </button>
+                            <div class="row">
+                                <input (click)="onDisconnect()" *ngIf="connected$ | async"
+                                       type="button" class="form-control bg-warning my-3 w-25" value="Disconnect">
+                            </div>
                         </section>
                     </div>
                     <div class="col-6">
-                        <section *ngIf="publicKey$ | async as publicKey">
+                        <section *ngIf="publicKey$ | async as publicKey" class="py-3">
                             <h2>Transaction</h2>
 
                             <div>
                                 <label>Recipient</label>
-                                <input type="text" [(ngModel)]="recipient" />
+                                <input type="text" class="form-control" [(ngModel)]="recipient" placeholder="Recipient Address"/>
                             </div>
 
                             <div>
                                 <label>Lamports</label>
-                                <input type="number" [(ngModel)]="lamports" />
+                                <input type="number" class="form-control" [(ngModel)]="lamports" />
                             </div>
 
-                            <button (click)="onSendTransaction(publicKey)">Send Transaction</button>
-                            <button (click)="onSignTransaction(publicKey)">Sign Transaction</button>
-                            <button (click)="onSignAllTransactions(publicKey)">
-                                Sign All Transactions
-                            </button>
-                            <button (click)="onSignMessage()">Sign Message</button>
+                            <div class="my-4">
+                                <div class="d-flex">
+                                    <input type="button" class="form-control" (click)="onSendTransaction(publicKey)" value="Send Transaction">
+                                    <input type="button" class="form-control" (click)="onSignTransaction(publicKey)" value="Sign Transaction">
+                                </div>
+                                <div class="d-flex">
+                                    <input type="button" class="form-control" (click)="onSignAllTransactions(publicKey)" value="Sign All Transactions">
+                                    <input type="button" class="form-control" (click)="onSignMessage()" value="Sign Message">
+                                </div>
+                            </div>
+
                         </section>
                     </div>
                 </div>
@@ -138,11 +144,11 @@
                             </div>
                             <div class="col-12">
                                 <div class="row text-center">
-                                    <div class="col-6 box-square user-select-none px-0" (click)="changeMode(0)">
-                                        <div class="form-control h-100 on-hover-light" [ngClass]="{'box-square-cool-green': mode == 0}"><span class="h2 text-dark-green">Sell</span></div>
-                                    </div>
                                     <div class="col-6 box-square user-select-none px-0" (click)="changeMode(1)">
-                                        <div class="form-control h-100 on-hover-light" [ngClass]="{'box-square-cool-red': mode == 1}"><span class="h2 text-red">Buy</span></div>
+                                        <div class="form-control h-100 on-hover-light" [ngClass]="{'box-square-cool-green': mode == 1}"><span class="h2 text-dark-green">Sell</span></div>
+                                    </div>
+                                    <div class="col-6 box-square user-select-none px-0" (click)="changeMode(0)">
+                                        <div class="form-control h-100 on-hover-light" [ngClass]="{'box-square-cool-red': mode == 0}"><span class="h2 text-red">Buy</span></div>
                                     </div>
                                 </div>
                             </div>

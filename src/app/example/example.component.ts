@@ -9,6 +9,8 @@ import base58 from 'bs58';
 import context from 'mamam-sdk/lib/sdk/types/context';
 import loadOrderbook from 'mamam-sdk/lib/sdk/utils/loadOrderbook';
 import { MARKET } from 'mamam-sdk/lib/sdk/constants';
+import placeOrder from 'mamam-sdk/lib/sdk/instructions/placeOrder';
+import initUserOnMarket from 'mamam-sdk/lib/sdk/instructions/initUserOnMarket';
 
 @Component({
     selector: 'app-example',
@@ -37,6 +39,7 @@ export class ExampleComponent implements OnInit {
     public walletPubKey = {} as PublicKey;
     public anchorWallet$ = this._walletStore.anchorWallet$;
     public market$: Promise<TransactionSignature> | undefined;
+    public once = false;
 
     lamports = 0;
     recipient = '';
@@ -52,7 +55,7 @@ export class ExampleComponent implements OnInit {
         let outerThis = this;
         // repeat every 5 second
         async function repeat() {
-            setTimeout(repeat, 5000);
+            setTimeout(repeat, 2000);
             if (outerThis.walletPubKey) {
                 let orderBook = await loadOrderbook(outerThis.context, MARKET);
                 outerThis.bidsList = orderBook[0];
@@ -65,6 +68,10 @@ export class ExampleComponent implements OnInit {
     public reloadWallet() {
         this.anchorWallet$.subscribe(async wallet => {
             if (wallet) {
+                if (!this.once){
+                    this.once = true;
+                    await initUserOnMarket(this.context, MARKET);
+                }
                 this.walletPubKey = wallet.publicKey;
                 this.context = await initializeContext(wallet);
                 console.log('context', this.context);
@@ -217,7 +224,7 @@ export class ExampleComponent implements OnInit {
     }
 
     // orderBook
-    public mode = -1; // -1: Default Value, 0: Sell, 1: Buy
+    public mode = -1; // -1: Default Value, 0: Sell/Ask, 1: Buy/Bid
     public price = 0;
     public amount = 0;
 
@@ -239,11 +246,20 @@ export class ExampleComponent implements OnInit {
         this.mode = mode;
     }
 
-    public submit() {
-        console.log('submit ', 'price:', this.price, 'amount:', this.amount, 'mode:', this.mode)
-        if (this.price <= 0 || this.amount <= 0 || this.mode === -1){
+    public async submit() {
+        console.log('submit ', 'price:', this.price, 'amount:', this.amount, 'mode:', this.mode);
+        if (this.price <= 0 || this.amount <= 0 || this.mode === -1) {
             alert('請選擇買賣模式並輸入正確的金額及數量。');
+            return;
         }
-        // TODO
+        console.log(
+            'context', this.context,
+            'walletPubKey', this.walletPubKey,
+            'mode', this.mode,
+            'price', this.price,
+            'amount', this.amount
+        );
+        let order = await placeOrder(this.context, MARKET, this.mode, this.price, this.amount).then();
+        console.log(order);
     }
 }
