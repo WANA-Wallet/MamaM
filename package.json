@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "@angular-builders/custom-webpack": "^13.1.0",
     "@angular/animations": "~13.2.0",
@@ -31,7 +31,7 @@
     "tslib": "^2.3.0",
     "util": "^0.12.4",
     "zone.js": "~0.11.4",
-    "MamaM":"git@github.com:WayneAl/MamaM.git#1d872ef7ccaa66539085395d3f85f557d3ebe415"
+    "mamam-sdk":"1.0.7"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.2.2",

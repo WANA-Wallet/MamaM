@@ -68,26 +68,27 @@
         </div>
         <div class="col-5">
             <!-- staking -->
-            <div class="container">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">Staking</h5>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
-                    </ul>
-                    <div class="card-body">
-                        <p class="card-text">TVL (total value locked)</p>
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
-                    </div>
-                    <div class="card-footer">
-                        test
-                    </div>
-                </div>
-            </div>
+            <!-- <div class="container"> -->
+            <!--     <div class="card"> -->
+            <!--         <div class="card-header"> -->
+            <!--             <h5 class="card-title">Staking</h5> -->
+            <!--         </div> -->
+            <!--         <ul class="list-group list-group-flush"> -->
+            <!--             <li class="list-group-item">Cras justo odio</li> -->
+            <!--             <li class="list-group-item">Dapibus ac facilisis in</li> -->
+            <!--             <li class="list-group-item">Vestibulum at eros</li> -->
+            <!--         </ul> -->
+            <!--         <div class="card-body"> -->
+            <!--             <p class="card-text">TVL (total value locked)</p> -->
+            <!--             <a href="#" class="card-link">Card link</a> -->
+            <!--             <a href="#" class="card-link">Another link</a> -->
+            <!--         </div> -->
+            <!--         <div class="card-footer"> -->
+            <!--             test -->
+            <!--         </div> -->
+            <!--     </div> -->
+            <!-- </div> -->
+
         </div>
     </div>
 
@@ -123,7 +124,7 @@
                                 <label class="w-100 cursor-pointer">
                                     <div class="row text-center">
                                         <div class="h2 col-6 box-square py-2 on-hover-light user-select-none">Price</div>
-                                        <div class="h2 col-6 box-square px-0"><input type="text" id="Price" class="form-control text-center h-100 fs-5" [(ngModel)]="price"></div>
+                                        <div class="h2 col-6 box-square px-0"><input type="number" id="Price" class="form-control text-center h-100 fs-5" [(ngModel)]="price"></div>
                                     </div>
                                 </label>
                             </div>
@@ -131,7 +132,7 @@
                                 <label class="w-100 cursor-pointer">
                                     <div class="row text-center">
                                         <div class="h2 col-6 box-square py-2 on-hover-light user-select-none">Amount</div>
-                                        <div class="h2 col-6 box-square px-0"><input type="text" id="Amount" class="form-control text-center h-100 fs-5" [ngModel]="amount"></div>
+                                        <div class="h2 col-6 box-square px-0"><input type="number" id="Amount" class="form-control text-center h-100 fs-5" [(ngModel)]="amount"></div>
                                     </div>
                                 </label>
                             </div>
@@ -154,5 +155,3 @@
     </div>
 
 </div>
-
-{{market$}}123

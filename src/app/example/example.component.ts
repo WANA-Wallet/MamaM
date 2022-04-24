@@ -4,9 +4,11 @@ import { ConnectionStore, WalletStore } from '@heavy-duty/wallet-adapter'
 import { concatMap, defer, first, from, map, Observable, throwError } from 'rxjs'
 import { Keypair, PublicKey, SystemProgram, Transaction, TransactionSignature } from '@solana/web3.js';
 import { isNotNull } from '../operators';
-import { initializeContext } from 'MamaM/sdk'
+import initializeContext from 'mamam-sdk/lib/sdk/initializeContext'
 import base58 from 'bs58';
-import initUserOnMarket from 'MamaM/sdk/instructions/initUserOnMarket';
+import context from 'mamam-sdk/lib/sdk/types/context';
+import loadOrderbook from 'mamam-sdk/lib/sdk/utils/loadOrderbook';
+import { MARKET } from 'mamam-sdk/lib/sdk/constants';
 
 @Component({
     selector: 'app-example',
@@ -31,6 +33,8 @@ export class ExampleComponent implements OnInit {
     );
     readonly connected$ = this._walletStore.connected$;
     readonly publicKey$ = this._walletStore.publicKey$;
+    public context = {} as context;
+    public walletPubKey = {} as PublicKey;
     public anchorWallet$ = this._walletStore.anchorWallet$;
     public market$: Promise<TransactionSignature> | undefined;
 
@@ -44,9 +48,34 @@ export class ExampleComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.reloadWallet();
+        let outerThis = this;
+        // repeat every 5 second
+        async function repeat() {
+            setTimeout(repeat, 5000);
+            if (outerThis.walletPubKey) {
+                let orderBook = await loadOrderbook(outerThis.context, MARKET);
+                outerThis.bidsList = orderBook[0];
+                outerThis.asksList = orderBook[1];
+            }
+        }
+        repeat();
+    }
+
+    public reloadWallet() {
+        this.anchorWallet$.subscribe(async wallet => {
+            if (wallet) {
+                this.walletPubKey = wallet.publicKey;
+                this.context = await initializeContext(wallet);
+                console.log('context', this.context);
+            } else {
+                console.warn('wallet undetected!!');
+            }
+        });
     }
 
     onConnect() {
+        this.reloadWallet();
         this._walletStore.connect().subscribe();
     }
 
@@ -55,19 +84,10 @@ export class ExampleComponent implements OnInit {
     }
 
     onSelectWallet(walletName: WalletName) {
+        this.reloadWallet();
         this._walletStore.selectWallet(walletName);
-        this.anchorWallet$.subscribe(wallet => {
-            if (wallet) {
-                let context$ = initializeContext(wallet);
-                context$.then((context) => {
-                    this.market$ = initUserOnMarket(context, wallet.publicKey);
-                    }
-                );
-            } else {
-                console.warn('wallet undefined!!');
-            }
-        })
     }
+
 
     onSendTransaction(fromPubkey: PublicKey) {
         this.connection$
@@ -222,7 +242,7 @@ export class ExampleComponent implements OnInit {
     public submit() {
         console.log('submit ', 'price:', this.price, 'amount:', this.amount, 'mode:', this.mode)
         if (this.price <= 0 || this.amount <= 0 || this.mode === -1){
-            // 不給submit
+            alert('請選擇買賣模式並輸入正確的金額及數量。');
         }
         // TODO
     }
