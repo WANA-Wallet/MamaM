@@ -4,8 +4,8 @@ Market MA Maker on Hackathon 3.0
 
 # Install & Run
 
-  npm install
-  npm start
+`npm install`  
+`npm start`  
 
 
 # 參考資料
