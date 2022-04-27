@@ -8,15 +8,9 @@
                         <section class="py-3">
                             <h2>Wallet Details</h2>
 
-                            <select
-                                    [ngModel]="walletName$ | async"
-                                    (ngModelChange)="onSelectWallet($event)"
-                            >
+                            <select [ngModel]="walletName$ | async" (ngModelChange)="onSelectWallet($event)">
                                 <option [ngValue]="null">Not selected</option>
-                                <option
-                                        *ngFor="let wallet of wallets$ | async"
-                                        [ngValue]="wallet.adapter.name"
-                                >
+                                <option *ngFor="let wallet of wallets$ | async" [ngValue]="wallet.adapter.name">
                                     {{ wallet.adapter.name }} ({{ wallet.readyState }})
                                 </option>
                             </select>
@@ -26,15 +20,8 @@
                                 <ng-container *ngIf="ready$ | async">(READY)</ng-container>
                             </p>
                             <p>Wallet Key: {{ publicKey$ | async }}</p>
-                            <button
-                                    (click)="onConnect()"
-                                    *ngIf="
-            (connected$ | async) === false && (walletName$ | async) !== null
-          "
-                                    [disabled]="(ready$ | async) === false"
-                            >
-                                Connect
-                            </button>
+                            <button (click)="onConnect()" *ngIf="(connected$ | async) === false && (walletName$ | async) !== null"
+                                    [disabled]="(ready$ | async) === false">Connect</button>
                             <div class="row">
                                 <input (click)="onDisconnect()" *ngIf="connected$ | async"
                                        type="button" class="form-control bg-warning my-3 w-25" value="Disconnect">
@@ -145,10 +132,10 @@
                             <div class="col-12">
                                 <div class="row text-center">
                                     <div class="col-6 box-square user-select-none px-0" (click)="changeMode(1)">
-                                        <div class="form-control h-100 on-hover-light" [ngClass]="{'box-square-cool-green': mode == 1}"><span class="h2 text-dark-green">Sell</span></div>
+                                        <div class="form-control h-100 on-hover-light" [ngClass]="{'box-square-cool-green': side == 1}"><span class="h2 text-dark-green">Sell</span></div>
                                     </div>
                                     <div class="col-6 box-square user-select-none px-0" (click)="changeMode(0)">
-                                        <div class="form-control h-100 on-hover-light" [ngClass]="{'box-square-cool-red': mode == 0}"><span class="h2 text-red">Buy</span></div>
+                                        <div class="form-control h-100 on-hover-light" [ngClass]="{'box-square-cool-red': side == 0}"><span class="h2 text-red">Buy</span></div>
                                     </div>
                                 </div>
                             </div>

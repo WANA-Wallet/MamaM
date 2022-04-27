@@ -31,7 +31,7 @@
     "tslib": "^2.3.0",
     "util": "^0.12.4",
     "zone.js": "~0.11.4",
-    "mamam-sdk":"1.0.7"
+    "mamam-sdk":"1.0.9"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.2.2",

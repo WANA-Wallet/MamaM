@@ -7,6 +7,9 @@ Market MA Maker on Hackathon 3.0
 `npm install`  
 `npm start`  
 
+# API
+[MamaM-sdk](https://github.com/WayneAl/MamaM)  
+
 
 # 參考資料
 
