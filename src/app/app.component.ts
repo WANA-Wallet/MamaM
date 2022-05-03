@@ -24,9 +24,9 @@ export class AppComponent {
     this._hdConnectionStore.setEndpoint('https://api.devnet.solana.com');
     this._hdWalletStore.setAdapters([
       new PhantomWalletAdapter(),
-      new SlopeWalletAdapter(),
-      new SolflareWalletAdapter(),
-      new SolongWalletAdapter(),
+      // new SlopeWalletAdapter(),
+      // new SolflareWalletAdapter(),
+      // new SolongWalletAdapter(),
     ]);
   }
 }

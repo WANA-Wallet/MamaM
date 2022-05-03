@@ -45,6 +45,7 @@ export class ExampleComponent implements OnInit {
 
     ngOnInit(): void {
         this.reloadWallet();
+
         let outerThis = this;
         // repeat every 5 second
         async function repeat() {
@@ -61,12 +62,12 @@ export class ExampleComponent implements OnInit {
     public reloadWallet() {
         this.anchorWallet$.subscribe(async wallet => {
             if (wallet) {
+                this.walletPubKey = wallet.publicKey;
+                this.context = await initializeContext(wallet);
                 if (!this.isWalletInit){
                     this.isWalletInit = true;
                     await initUserOnMarket(this.context, MARKET);
                 }
-                this.walletPubKey = wallet.publicKey;
-                this.context = await initializeContext(wallet);
                 console.log('context', this.context);
             } else {
                 console.warn('Wallet Undetected!!');
@@ -84,10 +85,9 @@ export class ExampleComponent implements OnInit {
     }
 
     onSelectWallet(walletName: WalletName) {
-        this.reloadWallet();
         this._walletStore.selectWallet(walletName);
+        this.reloadWallet();
     }
-
 
     onSendTransaction(fromPubkey: PublicKey) {
         this.connection$
