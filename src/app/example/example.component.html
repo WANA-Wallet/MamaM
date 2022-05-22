@@ -1,3 +1,12 @@
+<ng-template #modal>
+    <div class="modal-header">
+        <h3>{{modalHeader}}</h3>
+    </div>
+    <div class="modal-body">
+        {{modalText}}
+    </div>
+</ng-template>
+
 <div class="container">
     <div class="row my-4">
         <div class="col-12 box-square-cool-gold">
@@ -86,7 +95,7 @@
     </div>
 
     <!-- order-book -->
-    <div class="row py-3 align-items-center">
+    <div class="row py-3 align-items-center" *ngIf="publicKey$ | async as publicKey">
         <div class="col-12 col-md-6">
             <div class="container">
                 <div class="row text-center">

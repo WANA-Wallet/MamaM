@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core'
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core'
+import {NgbModalConfig, NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import { WalletName, WalletReadyState } from '@solana/wallet-adapter-base'
 import { ConnectionStore, WalletStore } from '@heavy-duty/wallet-adapter'
 import { concatMap, defer, first, from, map, Observable, throwError } from 'rxjs'
@@ -33,35 +34,56 @@ export class ExampleComponent implements OnInit {
     public anchorWallet$ = this._walletStore.anchorWallet$;
     public market$: Promise<TransactionSignature> | undefined;
     public isWalletInit = false;
+    public isModalOpen = false;
+    public lamports = 0;
+    public recipient = '';
+    public modalHeader = '';
+    public modalText = '';
+    private modal: NgbModalRef | undefined;
 
-    lamports = 0;
-    recipient = '';
-
+    @ViewChild('modal') modalContent: TemplateRef<any> | undefined;
     constructor(
+        private modalService: NgbModal,
         private readonly _connectionStore: ConnectionStore,
         private readonly _walletStore: WalletStore
     ) {
     }
 
     ngOnInit(): void {
+
+    }
+
+    ngAfterViewInit(): void {
         this.reloadWallet();
 
+        this.wallets$.subscribe(wallets => {
+            wallets.forEach(wallet => {
+                if (!this.isModalOpen && wallet.adapter.name === 'Phantom' && wallet.readyState === 'NotDetected'){
+                    this.modalHeader = '請先安裝瀏覽器插件';
+                    this.modalText = 'Please install `Phantom wallet`.';
+                    this.openModal();
+                }
+            })
+        })
         let outerThis = this;
-        // repeat every 5 second
-        async function repeat() {
-            setTimeout(repeat, 5000);
-            if (outerThis.walletPubKey) {
-                let orderBook = await loadOrderbook(outerThis.context, MARKET);
-                outerThis.bidsList = orderBook[0];
-                outerThis.asksList = orderBook[1];
-            }
+        // refresh every 5 second
+        async function refreshOrderBook() {
+          setTimeout(refreshOrderBook, 5000);
+          if (Object.keys(outerThis.walletPubKey).length !== 0) {
+            let orderBook = await loadOrderbook(outerThis.context, MARKET);
+            outerThis.asksList = orderBook[0];
+            outerThis.bidsList = orderBook[1];
+          }
+
         }
-        repeat();
+        refreshOrderBook();
     }
 
     public reloadWallet() {
         this.anchorWallet$.subscribe(async wallet => {
+          console.log(wallet, !!wallet)
             if (wallet) {
+                this.modal?.dismiss();
                 this.walletPubKey = wallet.publicKey;
                 this.context = await initializeContext(wallet);
                 if (!this.isWalletInit){
@@ -70,12 +92,30 @@ export class ExampleComponent implements OnInit {
                 }
                 console.log('context', this.context);
             } else {
-                console.warn('Wallet Undetected!!');
+                console.warn('Wallet Undetected');
+                if (!this.isModalOpen){
+                    this.modalHeader = 'Wallet Undetected';
+                    this.modalText = 'Please login your wallet.';
+                    this.openModal();
+                }
             }
         });
     }
 
-    onConnect() {
+    public openModal() {
+        this.isModalOpen = true;
+        this.modal = this.modalService.open(this.modalContent, {size: 'lg'});
+        this.modal.result.then(
+            () => {
+                this.isModalOpen = false;
+            },
+            () => {
+                this.isModalOpen = false;
+            },
+        )
+    }
+
+  onConnect() {
         this.reloadWallet();
         this._walletStore.connect().subscribe();
     }
@@ -221,12 +261,13 @@ export class ExampleComponent implements OnInit {
     public price = 0;
     public amount = 0;
 
-    public bidsList: number[][] = [
+    // display fake data while initial
+    public asksList: number[][] = [
         [75.8754, 10],
         [50.0655, 8],
         [24.0614, 9],
     ];
-    public asksList: number[][] = [
+    public bidsList: number[][] = [
         [101.5473, 11],
         [126.9725, 7],
         [152.2083, 9],
